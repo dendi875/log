@@ -1,0 +1,17 @@
+{
+    "require": {
+        "pda/pheanstalk": "^3.2",
+        "elasticsearch/elasticsearch": "~5.0",
+        "monolog/monolog": "^1.25"
+    },
+    "autoload": {
+        "psr-4": {
+            "Walle\\": ["walle/"]
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Walle\\": ["tests/"]
+        }
+    }
+}
