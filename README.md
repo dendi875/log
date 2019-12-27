@@ -55,7 +55,7 @@
 ├── composer.json
 ├── composer.lock
 ├── daemons
-│   └── writelogtoes.php
+│   └── log-daemon.php
 ├── log.php
 ├── phpunit.xml.dist
 ├── tests
@@ -76,7 +76,7 @@
             └── BeanstalkdHandler.php
 ```
 
-* `daemons/writelogtoes.php` 该文件是就是我们的守护进程脚本，负责消费队列中的消息并把消息索引到`ES`中
+* `daemons/log-daemon.php` 该文件是就是我们的守护进程脚本，负责消费队列中的消息并把消息索引到`ES`中
 * `log.php` 测试文件，模拟上层业务系统调用`Log`类
 * `tests` 单元测试文件存放目录
 * `walle/Modules` 包装好的通用业务和系统功能组件，或者对第三方库封装的模块可以放到这个目录下。比如：`walle/Modules/Helper/Utils.php`是我们自己封装的辅助类，再比如：`walle/Modules/Log/Log.php`对扩展后的`monolog`库再次包装的类，它是直接提供给上层业务系统调用的
@@ -105,7 +105,7 @@ $ composer install
 ```sh
 #!/bin/sh
 exec 2>&1
-exec su - root -c "php /yourpath/log/src/daemons/writelogtoes.php" 1>> /yourpath/writelogtoes.php
+exec su - root -c "php /yourpath/log/src/daemons/log-daemon.php" 1>> /yourpath/log-daemon.php
 ```
 
 赋予执行权限
@@ -123,7 +123,7 @@ exec su - root -c "php /yourpath/log/src/daemons/writelogtoes.php" 1>> /yourpath
 确认进程正在运行
 
 ```sh
-# ps -ef | grep writelogtoes.php
+# ps -ef | grep log-daemon.php
 ```
 
 到这里我们的守护进程已经在后台运行了，而且被`daemontools`监护着，我们通过`beanstalk_console`可以看到名为`log`的`tube`已经产生
@@ -206,6 +206,6 @@ OK (2 tests, 4 assertions)
 
 ### 注意事项 
 
-* 消费者程序`writelogtoes.php`是常驻内存的，程序运行后就把我们的代码加载到内存了，无论后期我们怎么修改磁盘上的代码，重新再次发起请求的时候，永远都是内存中的代码生效，所以我们修改代码后要杀死`writelogtoes.php`进程，释放掉内存，重新把新的代码加载内存中。**我们只要`kill`就行，`Daemontools`会自动帮我们重新拉起。**
+* 消费者程序`log-daemon.php`是常驻内存的，程序运行后就把我们的代码加载到内存了，无论后期我们怎么修改磁盘上的代码，重新再次发起请求的时候，永远都是内存中的代码生效，所以我们修改代码后要杀死`log-daemon.php`进程，释放掉内存，重新把新的代码加载内存中。**我们只要`kill`就行，`Daemontools`会自动帮我们重新拉起。**
 
-* 还是因为`writelogtoes.php`是常驻内存的，所以编写代码时一定要小心，防止内存溢出。
+* 还是因为`log-daemon.php`是常驻内存的，所以编写代码时一定要小心，防止内存泄漏。

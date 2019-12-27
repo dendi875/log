@@ -18,7 +18,7 @@ use Elasticsearch\ClientBuilder;
 use Walle\Modules\Queue\BeanstalkdQueue;
 use Walle\Modules\Helper\Utils;
 
-class LogQueueProcessor
+class LogDaemon
 {
     const ES_SERVER = 'es.servers.dev.ofc:9200';
 
@@ -103,5 +103,5 @@ class LogQueueProcessor
 
 }
 
-$logQueueProcessor = new LogQueueProcessor('Develop');
+$logQueueProcessor = new LogDaemon('Develop');
 $logQueueProcessor->run();

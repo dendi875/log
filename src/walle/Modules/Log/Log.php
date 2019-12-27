@@ -1,7 +1,7 @@
 <?php
 /**
  * 使用 monolog 将日志异步发送到 Beanstalkd 的 tube 为 log 队列里。
- * 然后由守护进程（daemons/writelogtoes.php）消费队列取出`job`再索引到`ES`中。
+ * 然后由守护进程（daemons/log-daemon.php）消费队列取出`job`再索引到`ES`中。
  *
  * monolog 使用的是我们自己扩充处理器 Walle\Monolog\Handler\BeanstalkdHandler
  *
