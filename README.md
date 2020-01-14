@@ -105,7 +105,7 @@ $ composer install
 ```sh
 #!/bin/sh
 exec 2>&1
-exec su - root -c "php /yourpath/log/src/daemons/log-daemon.php" 1>> /yourpath/log-daemon.php
+exec su - root -c "php /mnt/hgfs/github/log/src/daemons/log-daemon.php" 1>> /data1/log/php-scripts/log-daemon.php 
 ```
 
 赋予执行权限
